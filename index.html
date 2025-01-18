@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Cozy Bakery 3D</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+    <style>
+        body {
+            perspective: 1000px;
+            background: linear-gradient(to bottom, #f7f3e9, #e9d8c6);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .carousel {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            transform-style: preserve-3d;
+            animation: rotate 10s infinite linear;
+        }
+
+        .carousel-item {
+            width: 200px;
+            height: 300px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transform: rotateY(calc(var(--i) * 45deg)) translateZ(300px);
+            transition: transform 0.5s;
+        }
+
+        .carousel-item img {
+            width: 100%;
+            border-radius: 10px 10px 0 0;
+        }
+
+        .carousel-item h3 {
+            text-align: center;
+            margin: 10px 0;
+        }
+
+        @keyframes rotate {
+            from {
+                transform: rotateY(0deg);
+            }
+            to {
+                transform: rotateY(360deg);
+            }
+        }
+
+        #order-section {
+            margin: 20px auto;
+            padding: 10px;
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        #menu-section, #contact-section {
+            margin: 20px auto;
+            padding: 10px;
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .floating-banner {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 10px;
+            background: #ff5722;
+            color: white;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        #cart {
+            margin: 20px;
+            padding: 10px;
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        #cart ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        #cart ul li {
+            margin: 5px 0;
+        }
+    </style>
+    <script>
+        const cart = [];
+
+        function displayFirstProduct() {
+            const product = {
+                name: "Chocolate Croissant",
+                price: "$3.50",
+                description: "Freshly baked croissant filled with rich chocolate."
+            };
+
+            alert(`First Product Available:\n\nName: ${product.name}\nPrice: ${product.price}\nDescription: ${product.description}`);
+        }
+
+        function addToCart(product) {
+            cart.push(product);
+            alert(`${product} has been added to your cart!`);
+        }
+
+        function submitOrder(event) {
+            event.preventDefault();
+            const name = document.getElementById('customerName').value;
+            const product = document.getElementById('productSelect').value;
+
+            addToCart(product);
+            alert(`Thank you, ${name}! Your order for ${product} has been placed.`);
+        }
+
+        function showCart() {
+            const cartList = cart.map(item => `<li>${item}</li>`).join('');
+            document.getElementById('cart-items').innerHTML = cartList || 'Your cart is empty!';
+        }
+    </script>
+</head>
+<body>
+
+<header>
+    <h1>Welcome to Nathy's Cozy Bakery</h1>
+    <p>Your daily dose of freshly baked happiness!</p>
+</header>
+
+<main>
+    <!-- 3D Carousel -->
+    <section class="carousel" aria-label="3D Product Carousel">
+        <div class="carousel-item" style="--i: 0">
+            <img src="https://source.unsplash.com/200x300/?croissant" alt="Chocolate Croissant">
+            <h3>Chocolate Croissant</h3>
+            <button onclick="addToCart('Chocolate Croissant')">Save for Later</button>
+        </div>
+        <div class="carousel-item" style="--i: 1">
+            <img src="https://source.unsplash.com/200x300/?bread" alt="Fresh Bread">
+            <h3>Fresh Bread</h3>
+            <button onclick="addToCart('Fresh Bread')">Save for Later</button>
+        </div>
+        <div class="carousel-item" style="--i: 2">
+            <img src="https://source.unsplash.com/200x300/?cupcake" alt="Cupcake">
+            <h3>Cupcake</h3>
+            <button onclick="addToCart('Cupcake')">Save for Later</button>
+        </div>
+        <div class="carousel-item" style="--i: 3">
+            <img src="https://source.unsplash.com/200x300/?cookie" alt="Cookie">
+            <h3>Cookie</h3>
+            <button onclick="addToCart('Cookie')">Save for Later</button>
+        </div>
+    </section>
+
+    <!-- Order Section -->
+    <section id="order-section">
+        <h2>Order Your Favorite Treat</h2>
+        <form onsubmit="submitOrder(event)">
+            <label for="customerName">Your Name:</label>
+            <input type="text" id="customerName" placeholder="Enter your name" required>
+
+            <label for="productSelect">Select Product:</label>
+            <select id="productSelect" required>
+                <option value="Chocolate Croissant">Chocolate Croissant</option>
+                <option value="Fresh Bread">Fresh Bread</option>
+                <option value="Cupcake">Cupcake</option>
+                <option value="Cookie">Cookie</option>
+            </select>
+
+            <button type="submit">Place Order</button>
+        </form>
+    </section>
+
+    <!-- Cart Section -->
+    <section id="cart">
+        <h2>Your Cart</h2>
+        <button onclick="showCart()">View Cart</button>
+        <ul id="cart-items"></ul>
+    </section>
+
+    <!-- Menu Section -->
+    <section id="menu-section">
+        <h2>Menu</h2>
+        <p>Explore our delicious range of bakery items!</p>
+        <ul>
+            <li>Chocolate Croissant - $3.50</li>
+            <li>Fresh Bread - $4.00</li>
+            <li>Cupcake - $2.50</li>
+            <li>Cookie - $1.50</li>
+        </ul>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact-section">
+        <h2>Contact Us</h2>
+        <p>Email: contact@nathysbakery.com</p>
+        <p>Phone: +123 456 789</p>
+        <p>Address: 123 Bakery Lane, Sweet City</p>
+    </section>
+</main>
+
+<!-- Floating Banner -->
+<div class="floating-banner">
+    <span>First Product Available: <strong onclick="displayFirstProduct()" style="cursor: pointer; text-decoration: underline;">Click here to view</strong></span>
+</div>
+
+</body>
+</html>
